@@ -1,0 +1,18 @@
+@model IndexViewModel
+
+@{
+    ViewData["Title"] = "Add Note";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<form asp-action="Create" method="post">
+    <div class="form-group">
+        <label for="content">Content:</label>
+        <textarea class="form-control" id="content" name="Content"></textarea>
+    </div>
+    <input type="hidden" name="Parentid" value="@Context.Request.Query["parentid"]" />
+    <button type="submit" class="btn btn-primary">Add Note</button>
+</form>
+
+

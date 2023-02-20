@@ -1,0 +1,46 @@
+﻿@model IndexViewModel
+
+@{
+  ViewData["Title"] = "Notes";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<ul>
+  @foreach (var note in Model.Notes.Where(n => n.Parentid == null))
+  {
+    <li>
+      @await DisplayNoteChildren(note)
+
+    </li>
+  }
+</ul>
+<a asp-action="Create" class="btn btn-primary">+</a>
+@functions
+{
+  private async Task<Notes.Models.Entities.Note> DisplayNoteChildren(Notes.Models.Entities.Note note)
+  {
+    <div>
+      @note.Content
+      <div class="d-inline-block">
+        <a asp-action="Create" asp-route-parentid="@note.Id" class="btn btn-primary">+</a>
+      </div>
+      <div class="d-inline-block">
+        <form asp-action="Remove" method="post">
+          <input type="hidden" name="id" value="@note.Id" />
+          <button type="submit" class="btn btn-danger">-</button>
+        </form>
+      </div>
+      <ul>
+        @foreach (var childNote in note.InverseParent)
+        {
+          <li>
+            @await DisplayNoteChildren(childNote)
+          </li>
+        }
+      </ul>
+    </div>
+    return null;
+  }
+}
+
